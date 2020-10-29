@@ -1,0 +1,33 @@
+name: Go Release
+author: Tanyi Chen
+description: Release a new version of Go
+inputs:
+  tag:
+    required: true
+  token:
+    default: ${{ github.token }}
+  input:
+    description: input parameters for build
+  output:
+    description: output folder for executable
+  platforms:
+    description: platforms for go build
+  prebuild:
+    description: prebuild script
+runs:
+  using: composite
+  steps:
+    - run: ${{ inputs.prebuild }}
+      if: ${{ inputs.prebuild }} != ''
+      shell: bash
+    - run: t-actions/go-build@master
+      with:
+        platforms: ${{ inputs.platforms }}
+        output_dir: ${{ inputs.output }}
+    - run: svenstaro/upload-release-action@2.2.0
+      with:
+        repo_token: ${{ inputs.token }}
+        file: ${{ inputs.output }}/*
+        tag: ${{ inputs.tag }}
+        file_glob: true
+        overwrite: true
