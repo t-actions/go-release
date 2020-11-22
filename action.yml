@@ -10,6 +10,7 @@ inputs:
     description: input parameters for build
   output:
     description: output folder for executable
+    default: build
   platforms:
     description: platforms for go build
   prebuild:
