@@ -21,11 +21,11 @@ runs:
     - run: ${{ inputs.prebuild }}
       if: ${{ inputs.prebuild }} != ''
       shell: bash
-    - run: t-actions/go-build@master
+    - uses: t-actions/go-build@master
       with:
         platforms: ${{ inputs.platforms }}
         output_dir: ${{ inputs.output }}
-    - run: svenstaro/upload-release-action@2.2.0
+    - uses: svenstaro/upload-release-action@2.2.0
       with:
         repo_token: ${{ inputs.token }}
         file: ${{ inputs.output }}/*
